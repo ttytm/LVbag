@@ -1,0 +1,101 @@
+name: Windows
+
+on:
+  workflow_call:
+
+env:
+  REPO_NAME: ${{ github.event.repository.name }}
+
+jobs:
+  setup:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout ${{ env.REPO_NAME }}
+        uses: actions/checkout@v4
+      - name: Checkout V
+        uses: actions/checkout@v4
+        with:
+          repository: 'vlang/v'
+          path: vlang
+      - name: Setup V
+        run: cd vlang && ./make.bat && ./v symlink
+      - name: v install
+        run: |
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+          v install
+      - name: Cache
+        uses: actions/cache/save@v3
+        with:
+          path: |
+            vlang
+            ~/.vmodules
+          key: ${{ runner.os }}-${{ github.sha }}
+
+  test:
+    needs: setup
+    strategy:
+      matrix:
+        cc: [tcc, gcc]
+        # optimization: ['', -cstrict] # cstrict currently fails with pcre
+        optimization: ['']
+        include:
+          - cc: gcc
+            optimization: -prod
+      fail-fast: false
+    runs-on: windows-latest
+    env:
+      VFLAGS: -cg -cc ${{ matrix.cc }} ${{ matrix.optimization }} -o lvb.exe
+    steps:
+      - name: Checkout ${{ env.REPO_NAME }}
+        uses: actions/checkout@v4
+      - name: Restore Cache
+        uses: actions/cache/restore@v3
+        with:
+          path: |
+            vlang
+            ~/.vmodules
+          key: ${{ runner.os }}-${{ github.sha }}
+          fail-on-cache-miss: true
+      - name: Setup V
+        run: vlang/v symlink
+      - name: Build
+        run: |
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+          v .
+      - name: Run
+        run: ./lvb .
+
+  deploy:
+    needs: test
+    runs-on: windows-latest
+    permissions:
+      contents: write
+    env:
+      ARTIFACT: lvb-windows-amd64.exe
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Checkout ${{ env.REPO_NAME }}
+        uses: actions/checkout@v4
+      - name: Checkout V
+        uses: actions/checkout@v4
+        with:
+          repository: 'vlang/v'
+          path: vlang
+      - name: Setup V
+        run: cd vlang && ./make.bat && ./v symlink
+      - name: Build
+        run: |
+          v -cc gcc -prod -o $ARTIFACT .
+          v fmt main.v && v fmt -verify main.v && v fmt -verify examples/
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.ARTIFACT }}
+          path: ${{ env.ARTIFACT }}
+      - name: Release Artifacts
+        if: github.ref_type == 'tag'
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.ARTIFACT }}
