@@ -1,0 +1,59 @@
+<html>
+	<head>
+		<title>UI</title>
+		<style>
+			body {
+				width: 100%;
+				height: 100%;
+				display: grid;
+				overflow: hidden;
+				justify-content: center;
+				align-items: center;
+				background-color: #060606;
+			}
+			.content {
+				display: grid;
+			}
+			button {
+				cursor: pointer;
+				border: none;
+				background: none;
+			}
+			#counter {
+				width: 100px;
+				height: 2.6em;
+				color: #ecf0f1;
+				border-radius: 0.5em;
+				background: linear-gradient(to right, #274060, #1b2845);
+				box-shadow: 0px 0px 6px 2px transparent;
+				transition: box-shadow 0.2s cubic-bezier(0.17, 0.67, 0.26, 0.86);
+			}
+			#counter:active {
+				box-shadow: 0px 0px 6px 2px #bd93f944;
+			}
+			#gh {
+				position: absolute;
+				bottom: 0.75em;
+				right: 0.75em;
+				opacity: 0.25;
+				transition: opacity 0.2s;
+			}
+			#gh:hover {
+				opacity: 0.4;
+			}
+		</style>
+	</head>
+	<div class="content">
+		<button type="button" id="counter">Count <span id="count">0</span></button>
+		<button id="gh" type="button" onclick="open_in_browser('https://github.com/ttytm/LVbag');" >
+			<img src="https://img.shields.io/badge/LVbag-000?style=for-the-badge&logo=github&logoColor=bbbbff" />
+		</button>
+	</div>
+	<script>
+		const countBtn = document.getElementById('counter');
+		const count = countBtn.querySelector('span');
+		countBtn.addEventListener('click', async () => {
+			count.textContent = Number(count.textContent) + 1;
+		});
+	</script>
+</html>
