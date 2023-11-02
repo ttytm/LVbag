@@ -9,16 +9,21 @@ env:
 jobs:
   setup:
     runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: ${{ env.REPO_NAME }}
     steps:
       - name: Checkout ${{ env.REPO_NAME }}
         uses: actions/checkout@v4
+        with:
+          path: ${{ env.REPO_NAME }}
       - name: Checkout V
         uses: actions/checkout@v4
         with:
           repository: 'vlang/v'
           path: vlang
       - name: Setup V
-        run: cd vlang && ./make.bat && ./v symlink
+        run: cd ../vlang && ./make.bat && ./v symlink
       - name: v install
         run: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
@@ -75,27 +80,31 @@ jobs:
     defaults:
       run:
         shell: bash
+        working-directory: ${{ env.REPO_NAME }}
     steps:
       - name: Checkout ${{ env.REPO_NAME }}
         uses: actions/checkout@v4
+        with:
+          path: ${{ env.REPO_NAME }}
       - name: Checkout V
         uses: actions/checkout@v4
         with:
           repository: 'vlang/v'
           path: vlang
       - name: Setup V
-        run: cd vlang && ./make.bat && ./v symlink
+        run: cd ../vlang && ./make.bat
+      - run: ../vlang/v install
       - name: Build
-        run: |
-          v -cc gcc -prod -o $ARTIFACT .
-          v fmt main.v && v fmt -verify main.v && v fmt -verify examples/
+        run: ../vlang/v -cc gcc -prod -o $ARTIFACT .
+      - name: Verify
+        run: ../vlang/v fmt . && ../vlang/v fmt -verify .
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
           name: ${{ env.ARTIFACT }}
-          path: ${{ env.ARTIFACT }}
+          path: ${{ env.REPO_NAME }}/${{ env.ARTIFACT }}
       - name: Release Artifacts
         if: github.ref_type == 'tag'
         uses: softprops/action-gh-release@v1
         with:
-          files: ${{ env.ARTIFACT }}
+          files: ${{ env.REPO_NAME }}/${{ env.ARTIFACT }}

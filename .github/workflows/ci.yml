@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+    paths-ignore: ['**/*.md']
+  pull_request:
+    paths-ignore: ['**/*.md']
+
+jobs:
+  linux:
+    uses: ./.github/workflows/linux.yml
+    permissions:
+      contents: write
+
+  macOS:
+    uses: ./.github/workflows/macos.yml
+    permissions:
+      contents: write
+
+  windows:
+    uses: ./.github/workflows/windows.yml
+    permissions:
+      contents: write
