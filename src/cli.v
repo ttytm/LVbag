@@ -17,7 +17,7 @@ struct Settings {
 	skip_fmt  bool
 }
 
-const manifest = vmod.decode($embed_file('../v.mod').to_string()) or { panic(err) }
+const manifest = vmod.decode(@VMOD_FILE) or { panic(err) }
 
 fn start_cli() {
 	mut app := cli.Command{

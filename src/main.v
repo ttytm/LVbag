@@ -113,7 +113,9 @@ fn run(cmd cli.Command) ! {
 	}
 
 	if !s.skip_fmt {
-		os.execute_opt('${@VEXE} fmt -w ${s.output}') or { error_and_exit(err) }
+		if v := os.find_abs_path_of_executable('v') {
+			os.execute_opt('${v} fmt -w ${s.output}') or { error_and_exit(err) }
+		}
 	}
 
 	verbose_print(s.verbose, 'Completed.')
