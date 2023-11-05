@@ -1,5 +1,6 @@
 import cli
 import os
+import v.vmod
 
 struct Settings {
 	scan_dirs []string
@@ -15,6 +16,8 @@ struct Settings {
 	verbose   bool
 	skip_fmt  bool
 }
+
+const manifest = vmod.decode($embed_file('../v.mod').to_string()) or { panic(err) }
 
 fn start_cli() {
 	mut app := cli.Command{

@@ -2,13 +2,9 @@ import os
 import log
 import pcre
 import term
-import v.vmod
 import cli
 
-const (
-	manifest  = vmod.decode(@VMOD_FILE) or { panic(err) }
-	hidden_re = pcre.new_regex('(\\${os.path_separator}\\.\\w+)', 0) or { panic(err) }
-)
+const hidden_re = pcre.new_regex('(\\${os.path_separator}\\.\\w+)', 0) or { panic(err) }
 
 fn main() {
 	$if lv_log ? {
