@@ -86,7 +86,7 @@ Commands:
 
 Simple Application examples that utilize this tool can be found in the [<kbd>.examples/</kbd>](https://github.com/ttytm/LVbag/tree/main/examples) directory.
 
-<!-- An application example that uses LVbag to embed the files of dynamic npm build output is [emoji-mart-desktop](https://github.com/ttytm/emoji-mart-desktop) -->
+An example application that uses LVbag to embed the files of a dynamic npm build output is [emoji-mart-desktop](https://github.com/ttytm/emoji-mart-desktop)
 
 ## Development
 
