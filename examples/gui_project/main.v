@@ -1,5 +1,5 @@
 import os { join_path }
-import webview as ui
+import ttytm.webview as ui
 
 struct Paths {
 mut:
@@ -18,12 +18,19 @@ fn init() {
 		p = paths
 	}
 	app_root := @VMODROOT
-	// For less re-creation, it could also be the cache directory with a version key instead of the temp directory.
-	app_tmp := join_path(os.temp_dir(), 'lvb_example')
 	p.ui_dev = join_path(app_root, 'ui', 'src')
-	p.ui = $if prod { join_path(app_tmp, 'ui') } $else { p.ui_dev }
 	p.icon_dev = join_path(app_root, 'assets', 'icon.ico')
-	p.icon = $if prod { join_path(app_tmp, 'assets', 'icon.ico') } $else { p.icon_dev }
+	$if embed ? {
+		// For less re-creation: instead of using a temp directory, it could be a
+		// cache directory with a version key.
+		app_tmp := join_path(os.temp_dir(), 'lvb_example')
+		p.ui = join_path(app_tmp, 'ui')
+		p.icon = join_path(app_tmp, 'assets', 'icon.ico')
+		write_embedded() or { eprintln('Failed writing embedded files: `${err}`') }
+	} $else {
+		p.ui = p.ui_dev
+		p.icon = p.icon_dev
+	}
 }
 
 fn open_in_browser(e &ui.Event) {
@@ -36,9 +43,6 @@ fn increment(e &ui.Event) !int {
 }
 
 fn main() {
-	$if embed ? {
-		write_embedded() or { eprintln('Failed writing embedded files: `${err}`') }
-	}
 	// Create a Window.
 	w := ui.create()
 	w.set_title('UI')
