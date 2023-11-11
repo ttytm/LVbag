@@ -91,7 +91,7 @@ fn run(cmd cli.Command) ! {
 		res += '[\n'
 	}
 	for path in incl_paths {
-		res += "\t\$embed_file('${path}')\n"
+		res += "\t\$embed_file(r'${path}')\n"
 	}
 	if os.is_dir(s.scan_dirs[0]) {
 		res += ']'
