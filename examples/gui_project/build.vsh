@@ -28,7 +28,7 @@ fn gen_embeds() ! {
 	if !is_file('../../lvb') {
 		execute_opt('v -o ../../lvb ../../')!
 	}
-	execute_opt('../../lvb -bag ui_files -o lvb.v -f ui/src')!
+	execute_opt('../../lvb -bag ui_files -o lvb.v -f ui/build')!
 	execute_opt('../../lvb -bag icon -o lvb.v -a assets/icon.ico')!
 	println('\rEmbed Files ✔️')
 }
