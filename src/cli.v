@@ -27,7 +27,7 @@ fn start_cli() {
 		description: manifest.description
 		pre_execute: fn (cmd cli.Command) ! {
 			if cmd.args.len == 0 {
-				eprintln('Specify the path to create a embedded file bag.\n')
+				eprintln('Specify the path for creating an embedded file bag.\n')
 				cmd.execute_help()
 				exit(0)
 			}
