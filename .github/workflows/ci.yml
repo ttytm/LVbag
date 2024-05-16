@@ -14,10 +14,12 @@ jobs:
 
   macOS:
     uses: ./.github/workflows/macos.yml
-    permissions:
-      contents: write
 
   windows:
     uses: ./.github/workflows/windows.yml
+
+  release:
+    needs: [linux, macos, windows]
+    uses: ./.github/workflows/release.yml
     permissions:
       contents: write
