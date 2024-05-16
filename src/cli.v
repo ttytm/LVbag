@@ -40,7 +40,9 @@ fn start_cli() {
 		}
 		execute: run
 		posix_mode: true
-		disable_man: true
+		defaults: struct {
+			man: false
+		}
 		flags: [
 			cli.Flag{
 				flag: .string
