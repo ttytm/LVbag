@@ -15,7 +15,7 @@ fn build_ui() ! {
 	mkdir(build_dir)!
 	// Copy UI files to `ui/build/`, append a hash to pretend it is a dynamic build.
 	walk(join_path('ui', 'src'), fn [build_dir] (file string) {
-		path, ext := file.rsplit_once('.')
+		path, ext := file.rsplit_once('.') or { return }
 		cp(file, join_path(build_dir, '${file_name(path)}_${rand.ulid()}.${ext}')) or { panic(err) }
 	})
 	println('\rBuild UI ✔️')
