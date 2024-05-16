@@ -68,7 +68,9 @@ jobs:
           - cc: gcc
             sanitizer: address,leak,undefined,shift,shift-exponent,shift-base,integer-divide-by-zero,unreachable,vla-bound,null,return,signed-integer-overflow,bounds,bounds-strict,alignment,object-size,float-divide-by-zero,float-cast-overflow,nonnull-attribute,returns-nonnull-attribute,bool,enum,vptr
           - cc: clang
-            sanitizer: undefined
+            sanitizer: address,leak,undefined
+          - cc: clang
+            sanitizer: thread
           - cc: clang
             sanitizer: memory
       fail-fast: false
