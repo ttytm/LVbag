@@ -10,7 +10,7 @@ fn init() {
 fn write_embedded() ! {
 	if !os.exists(paths.ui) {
 		// Write embedded files if they don't exist yet.
-		ui_src_path := os.join_path('ui', 'src')
+		ui_src_path := os.join_path('ui', 'build')
 		for file in ui_files {
 			// In this example, there are only three UI files. However, this could be
 			// a long list of generated files (e.g. if embedding a Node.js project).

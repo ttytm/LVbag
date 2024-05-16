@@ -1,6 +1,5 @@
 #!/usr/bin/env -S v
 
-import rand
 import os
 
 const app_root = @VMODROOT
@@ -13,10 +12,9 @@ fn build_ui() ! {
 	rmdir_all(build_dir) or {}
 	// Create `ui/build/` - fail is next to impossible as `dist/` does not exist at this point
 	mkdir(build_dir)!
-	// Mock a dynamic node build: Copy UI files to `ui/build/` and append a hash to their names.
+	// Mock a dynamic node build: Copy UI files to `ui/build/`.
 	walk(join_path('ui', 'src'), fn [build_dir] (file string) {
-		path, ext := file.rsplit_once('.') or { return }
-		cp(file, join_path(build_dir, '${file_name(path)}_${rand.ulid()}.${ext}')) or { panic(err) }
+		cp(file, join_path(build_dir, file_name(file))) or { panic(err) }
 	})
 	println('\rBuild UI ✔️')
 }
