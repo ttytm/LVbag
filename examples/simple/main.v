@@ -1,13 +1,11 @@
 import os
 
-const (
-	app_tmp     = os.join_path(os.temp_dir(), 'lvb-example--simple')
-	ui_dev_path = os.join_path(@VMODROOT, 'ui')
-	ui_path     = $if prod { os.join_path(app_tmp, 'ui') } $else { ui_dev_path }
-)
+const app_tmp = os.join_path(os.temp_dir(), 'lvb-example--simple')
+const ui_dev_path = os.join_path(@VMODROOT, 'ui')
+const ui_path = $if prod { os.join_path(app_tmp, 'ui') } $else { ui_dev_path }
 
 // Re-crate files from LVbag generated list if they don't exist yet.
-[if prod]
+@[if prod]
 fn write_embedded() {
 	if os.exists(ui_path) {
 		return

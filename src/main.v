@@ -142,7 +142,7 @@ fn write_res(out_path string, res string, force bool) ! {
 	os.write_file(out_path, res)!
 }
 
-[noreturn]
+@[noreturn]
 fn error_and_exit(err IError) {
 	eprintln(err.str())
 	exit(1)
