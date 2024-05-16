@@ -1,7 +1,7 @@
 # LVbag
 
 [badge__build]: https://img.shields.io/github/actions/workflow/status/ttytm/LVbag/ci.yml?style=flat-roundedbranch=main&logo=githubactions&logoColor=C0CAF5&labelColor=333
-[badge__version]: https://img.shields.io/github/v/release/ttytm/LVbag?style=flat-rounded&logo=shopee&logoColor=C0CAF5&labelColor=333
+[badge__version]: https://img.shields.io/github/v/release/ttytm/LVbag?style=flat-rounded&logo=task&logoColor=C0CAF5&labelColor=333
 [badge__license]: https://img.shields.io/github/license/ttytm/LVbag?style=flat-rounded&logo=opensourcehardware&label=License&logoColor=C0CAF5&labelColor=333
 
 [![][badge__build]](https://github.com/ttytm/LVbag/actions?query=branch%3Amain)
