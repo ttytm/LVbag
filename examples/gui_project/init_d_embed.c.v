@@ -8,11 +8,12 @@ fn init() {
 }
 
 fn write_embedded() ! {
-	// Re-crate files from LVbag generated list if they don't exist yet.
 	if !os.exists(paths.ui) {
-		// Lets pretend it contains some more files.
+		// Write embedded files if they don't exist yet.
 		ui_src_path := os.join_path('ui', 'src')
 		for file in ui_files {
+			// In this example, there are only three UI files. However, this could be
+			// a long list of generated files (e.g. if embedding a Node.js project).
 			_, rel_file_path := file.path.rsplit_once(ui_src_path) or {
 				return error('failed to prepare path for ${file.path}')
 			}

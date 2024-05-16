@@ -5,15 +5,15 @@ import os
 
 const app_root = @VMODROOT
 
-// This one could include e.g., building a npm project whichs build result contains hashed files.
 fn build_ui() ! {
 	print('Build UI...')
+	// This could be the path to the build result of an node project including generated files with hashed names.
 	build_dir := join_path(app_root, 'ui', 'build')
 	// Remove `ui/build/` if it exits - ignore errors if it doesn't
 	rmdir_all(build_dir) or {}
 	// Create `ui/build/` - fail is next to impossible as `dist/` does not exist at this point
 	mkdir(build_dir)!
-	// Copy UI files to `ui/build/`, append a hash to pretend it is a dynamic build.
+	// Mock a dynamic node build: Copy UI files to `ui/build/` and append a hash to their names.
 	walk(join_path('ui', 'src'), fn [build_dir] (file string) {
 		path, ext := file.rsplit_once('.') or { return }
 		cp(file, join_path(build_dir, '${file_name(path)}_${rand.ulid()}.${ext}')) or { panic(err) }
@@ -21,13 +21,13 @@ fn build_ui() ! {
 	println('\rBuild UI ✔️')
 }
 
-// Use LVbag to generate the embed file lists.
 fn gen_embeds() ! {
 	print('Embed Files...')
 	chdir(app_root)!
 	if !is_file('../../lvb') {
 		execute_opt('v -o ../../lvb ../../')!
 	}
+	// Use LVbag to generate the embed file lists.
 	execute_opt('../../lvb -bag ui_files -o lvb.v -f ui/build')!
 	execute_opt('../../lvb -bag icon -o lvb.v -a assets/icon.ico')!
 	println('\rEmbed Files ✔️')
