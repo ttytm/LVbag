@@ -10,18 +10,18 @@ jobs:
         include:
           - os: ubuntu-latest
             cc: gcc
-            artifact: lvb-linux-amd64.exe
+            artifact: lvb-linux-amd64
           - os: windows-latest
             cc: gcc
             artifact: lvb-windows-amd64.exe
           - os: macos-latest
             cc: clang
             cflags: -cflags "-target x86_64-apple-darwin"
-            artifact: lvb-macos-amd64.exe
+            artifact: lvb-macos-amd64
           - os: macos-latest
             cc: clang
             cflags: -cflags "-target arm64-apple-darwin"
-            artifact: lvb-macos-arm64.exe
+            artifact: lvb-macos-arm64
       fail-fast: false
     runs-on: ${{ matrix.os }}
     permissions:
